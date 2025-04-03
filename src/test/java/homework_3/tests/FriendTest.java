@@ -6,38 +6,47 @@ import homework_3.pages.LoginPage;
 import homework_3.services.BotFactory;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import homework_3.pages.FriendsPage;
 
 import static com.codeborne.selenide.Selenide.*;
 
+/**
+ * Test class for verifying friend-related functionality.
+ * <p>
+ * Inherits common test setup from {@link BasicTest}.
+ * </p>
+ */
 @DisplayName("Friend page test")
 public class FriendTest extends BasicTest {
 
+
+    /**
+     * Tests the complete friend addition workflow.
+     *
+     * @throws InterruptedException if any thread is interrupted during sleep/wait
+     * @see BotFactory#createBot(BotType)
+     * @see LoginPage
+     * @see FriendsPage
+     */
     @DisplayName("Successful friend adding")
     @Test
     void user_shouldAddFriend() throws InterruptedException {
         final Bot friend = BotFactory.createBot(BotType.FRIEND);
         new LoginPage()
-                .open()
                 .login(friend.login(), friend.password())
-                .navigation()
                 .goToFriendsPage()
-                .search()
-                .searchFriend(bot.username())
+                .searchFriendByName(bot.username())
                 .sendFriendRequest();
 
         clearBrowserCookies();
         clearBrowserLocalStorage();
         refresh();
-
-        new LoginPage()
-                .open()
+        open("/");
+        FriendsPage page = new LoginPage()
                 .login(bot.login(), bot.password())
-                .navigation()
                 .goToFriendsPage()
-                .requests()
-                .acceptRequest(friend.username())
-                .refreshPage()
-                .friendsList()
-                .verifyFriendExists(friend.username());
+                .acceptRequest(friend.username());
+        refresh();
+        page.verifyFriendExists(friend.username());
     }
 }

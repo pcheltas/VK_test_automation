@@ -10,9 +10,7 @@ public class FeedTest extends BasicTest {
     @Test
     void feed_shouldNotBeEmpty() {
         new LoginPage()
-                .open()
                 .login(bot.login(), bot.password())
-                .feed()
-                .shouldNotBeEmpty();
+                .verifyFeedIsNotEmpty();
     }
 }
