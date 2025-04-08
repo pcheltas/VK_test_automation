@@ -80,7 +80,7 @@ public class FriendsPage {
      * A helper class encapsulating the functionality related to searching for friends
      * and sending friend requests.
      */
-    private static class Search {
+    private class Search {
         private final SelenideElement searchInput = $x("//div[contains(@class, 'friends-menu')]//input[@type='search']");
         private final ElementsCollection searchResults = $$x("//div[contains(@class, 'gs_result_list')]");
 
@@ -122,7 +122,7 @@ public class FriendsPage {
     /**
      * A helper class encapsulating the functionality related to managing incoming friend requests.
      */
-    private static class Requests {
+    private class Requests {
         private final ElementsCollection requestItems = $$x("//friends-requests-block//div[contains(@data-l, 'targetUserId')]");
         private final String acceptButton = ".//span[@role='button' and contains(@data-l, 'accept')]";
 
@@ -150,7 +150,7 @@ public class FriendsPage {
     /**
      * A helper class encapsulating the functionality related to interacting with friends list.
      */
-    private static class FriendsList {
+    private class FriendsList {
         private final ElementsCollection friendCards = $$x("//div[@id='hook_Block_MyFriendsSquareCardsPagingB']//ul//*");
 
         /**
