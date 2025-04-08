@@ -1,11 +1,7 @@
 package homework_3.tests;
 
-import com.codeborne.selenide.Selenide;
-import homework_3.model.Bot;
-import homework_3.model.BotType;
 import homework_3.pages.HomePage;
 import homework_3.pages.LoginPage;
-import homework_3.services.BotFactory;
 import org.junit.jupiter.api.*;
 
 import java.util.stream.Stream;
@@ -25,12 +21,15 @@ import static com.codeborne.selenide.Condition.cssClass;
  * Inherits common test setup from {@link BasicTest}.
  * </p>
  */
+@Timeout(5)
+@Tag("smoke")
 public class HomeTest extends BasicTest {
 
     /**
      * Nested test class for feed-related functionality verification.
      */
     @Nested
+    @Timeout(10)
     @DisplayName("Feed test")
     class Feed {
 
@@ -69,8 +68,6 @@ public class HomeTest extends BasicTest {
         @DisplayName("Selected page is active in navigation bar")
         @TestFactory
         Stream<DynamicTest> nav_testNavActivePages() {
-            Bot bot = BotFactory.createBot(BotType.COMMON);
-            Selenide.open("https://ok.ru");
             HomePage page = new LoginPage().login(bot.login(), bot.password());
             return Stream.of(
                     "userMain",

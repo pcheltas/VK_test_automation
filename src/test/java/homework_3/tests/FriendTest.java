@@ -7,6 +7,7 @@ import homework_3.pages.LoginPage;
 import homework_3.services.BotFactory;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 
 import static com.codeborne.selenide.Selenide.*;
 
@@ -16,6 +17,7 @@ import static com.codeborne.selenide.Selenide.*;
  * Inherits common test setup from {@link BasicTest}.
  * </p>
  */
+@Timeout(30)
 @DisplayName("Friend page test")
 public class FriendTest extends BasicTest {
 

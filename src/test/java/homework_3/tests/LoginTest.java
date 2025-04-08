@@ -2,7 +2,9 @@ package homework_3.tests;
 
 import homework_3.pages.LoginPage;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -21,7 +23,9 @@ import static org.junit.jupiter.params.provider.Arguments.arguments;
  * Inherits common test setup from {@link BasicTest}.
  * </p>
  */
+@Timeout(10)
 @DisplayName("Login page test")
+@Tag("smoke")
 public class LoginTest extends BasicTest {
 
     /**
