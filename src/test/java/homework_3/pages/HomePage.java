@@ -80,7 +80,7 @@ public class HomePage {
     /**
      * A helper class encapsulating all navigation-related functionality.
      */
-    private static class Navigation {
+    private class Navigation {
         private final SelenideElement userProfileLink = $x("//a[contains(@data-l, 'userPage')]");
         private final SelenideElement friendsLink = $x("//a[contains(@data-l, 'userFriend')]");
 
@@ -126,7 +126,7 @@ public class HomePage {
     /**
      * A helper class encapsulating news feed interactions.
      */
-    private static class Feed {
+    private class Feed {
         private final ElementsCollection feedItems = $$x("//*[contains(@class, 'feed-w')]");
 
         /**
