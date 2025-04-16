@@ -36,7 +36,7 @@ public class FriendTest extends BasicTest {
     @Test
     void user_shouldAddFriend() throws InterruptedException {
         final Bot friend = BotFactory.createBot(BotType.FRIEND);
-        new LoginPage()
+        new LoginPage().get()
                 .login(friend.login(), friend.password())
                 .goToFriendsPage()
                 .searchFriendByName(bot.username())
@@ -46,7 +46,7 @@ public class FriendTest extends BasicTest {
         clearBrowserLocalStorage();
         refresh();
         open("/");
-        FriendsPage page = new LoginPage()
+        FriendsPage page = new LoginPage().get()
                 .login(bot.login(), bot.password())
                 .goToFriendsPage()
                 .acceptRequest(friend.username());

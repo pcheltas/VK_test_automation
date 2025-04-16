@@ -2,6 +2,7 @@ package homework_3.pages;
 
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
+import org.openqa.selenium.support.ui.LoadableComponent;
 
 import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
 import static com.codeborne.selenide.Condition.*;
@@ -18,7 +19,7 @@ import static com.codeborne.selenide.Selenide.*;
  * </ul>
  * </p>
  */
-public class HomePage {
+public class HomePage extends LoadableComponent<HomePage> {
     private final Navigation navigation;
     private final Feed feed;
     private final String activeClassname = "__ac";
@@ -26,6 +27,17 @@ public class HomePage {
     public HomePage() {
         this.navigation = new Navigation();
         this.feed = new Feed();
+    }
+
+    @Override
+    protected void load() {
+        navigation.userProfileLink.shouldBe(visible.because("User profile link should be visible on loaded home page"));
+    }
+
+    @Override
+    protected void isLoaded() throws Error {
+        navigation.userProfileLink.shouldBe(visible.because("User profile link should be visible on loaded home page"));
+        feed.feedItems.shouldHave(sizeGreaterThan(0).because("Feed items should exist on loaded home page"));
     }
 
     /**
@@ -44,7 +56,7 @@ public class HomePage {
      */
     public FriendsPage goToFriendsPage() {
         navigation.goToFriendsPage();
-        return page(FriendsPage.class);
+        return page(FriendsPage.class).get();
     }
 
     /**

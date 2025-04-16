@@ -40,7 +40,7 @@ public class HomeTest extends BasicTest {
         @DisplayName("Verify feed is not empty")
         @Test
         void feed_shouldNotBeEmpty() {
-            new LoginPage()
+            new LoginPage().get()
                     .login(bot.login(), bot.password())
                     .verifyFeedIsNotEmpty();
         }
@@ -70,7 +70,8 @@ public class HomeTest extends BasicTest {
         @DisplayName("Selected page is active in navigation bar")
         @TestFactory
         Stream<DynamicTest> nav_testNavActivePages() {
-            HomePage page = new LoginPage().login(bot.login(), bot.password());
+            HomePage page = new LoginPage().get()
+                    .login(bot.login(), bot.password());
             return Stream.of(
                     "userMain",
                     "hobby",

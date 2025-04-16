@@ -39,7 +39,7 @@ public class LoginTest extends BasicTest {
     @BotRequired
     @Test
     void login_givenValid_shouldSuccessfulLogin() {
-        new LoginPage()
+        new LoginPage().get()
                 .login(bot.login(), bot.password())
                 .verifyUserProfileLinkContainsUsername(bot.username());
     }
@@ -59,7 +59,7 @@ public class LoginTest extends BasicTest {
     @ParameterizedTest
     @MethodSource("loginDataProvider")
     void login_givenInvalid_shouldShowError(String email, String password) {
-        new LoginPage()
+        new LoginPage().get()
                 .loginExpectingError(email, password)
                 .verifyErrorMessageVisible();
     }
