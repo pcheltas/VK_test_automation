@@ -73,7 +73,7 @@ public class FriendsPage {
      * @throws InterruptedException if the thread is interrupted during the search.
      */
     public FriendsPage verifyFriendExists(String friendName) throws InterruptedException {
-        friendsList.searchForFriend(friendName).shouldBe(exist);
+        friendsList.searchForFriend(friendName).shouldBe(exist.because("Friend card should exist to verify it"));
         return this;
     }
 
@@ -82,8 +82,9 @@ public class FriendsPage {
      * and sending friend requests.
      */
     private class Search {
-        private final SelenideElement searchInput = $x("//div[contains(@class, 'friends-menu')]//input[@type='search']");
+        private final SelenideElement searchInput = $x("//input[@type='search']");
         private final ElementsCollection searchResults = $$x("//div[contains(@class, 'gs_result_list')]");
+        private final String anchor = ".//a";
 
         /**
          * Searches for a friend by entering their name into the search field and pressing Enter.
@@ -93,7 +94,7 @@ public class FriendsPage {
          */
         public void searchFriend(String friend) throws InterruptedException {
             searchInput.shouldBe(visible.because("Should be search input to find a friend"))
-                    .shouldBe(enabled)
+                    .shouldBe(enabled.because("Input should be enabled to click on it and focus"))
                     .click();
             Thread.sleep(3000);             // для ожидания фокусировки строки поиска после нажатия.
                                               // Использование неявных ожиданий или отсутствие предварительного клика вообще
@@ -101,7 +102,7 @@ public class FriendsPage {
                                               // Для использования явных ожиданий непонятно чего ждать. Можно было бы ждать
                                               // появления истории поиска, но на практике с sleep() при прогоне теста она (история) не
                                               // появляется, а поиск работает. Как исправить хз, знаю, что плохая практика
-            searchInput.shouldBe(focused)
+            searchInput.shouldBe(focused.because("Input should be focused to set value in it"))
                     .setValue(friend)
                     .pressEnter();
         }
@@ -113,7 +114,7 @@ public class FriendsPage {
         public void sendFriendRequest() {
             searchResults.shouldBe(sizeGreaterThan(0).because("Should be list of found people to send friend request"))
                     .first()
-                    .$$("a")
+                    .$$x(anchor)
                     .findBy(text("Добавить в друзья"))
                     .shouldBe(visible.because("Button needed to send friend request"))
                     .click();
@@ -124,7 +125,8 @@ public class FriendsPage {
      * A helper class encapsulating the functionality related to managing incoming friend requests.
      */
     private class Requests {
-        private final ElementsCollection requestItems = $$x("//friends-requests-block//div[contains(@data-l, 'targetUserId')]");
+        private final SelenideElement requestBlock = $x("//friends-requests-block");
+        private final String requestItems = ".//div[contains(@data-l, 'targetUserId')]";
         private final String acceptButton = ".//span[@role='button' and contains(@data-l, 'accept')]";
 
         /**
@@ -139,7 +141,7 @@ public class FriendsPage {
                                             // на обработку события не успевает замаппиться на кнопку (если не это, то без
                                             // понятия, что происходит). Для использования явных ожиданий все так же непонятно
                                             // чего ждать. Тоже хз как исправить
-            requestItems
+            requestBlock.$$x(requestItems)
                     .shouldBe(sizeGreaterThan(0).because("Friendship requests needed to accept request"))
                     .findBy(text(friendName))
                     .$x(acceptButton)
@@ -152,14 +154,14 @@ public class FriendsPage {
      * A helper class encapsulating the functionality related to interacting with friends list.
      */
     private class FriendsList {
-        private final ElementsCollection friendCards = $$x("//div[@id='hook_Block_MyFriendsSquareCardsPagingB']//ul//*");
+        private final SelenideElement friendsBlock = $x("//div[@id='hook_Block_MyFriendsSquareCardsPagingB']");
+        private final ElementsCollection friendCards = $$x(".//li");
 
         /**
          * Searches for a friend in the current friends list by their name.
          *
          * @param friendName the name of the friend to search for.
          * @return the {@link SelenideElement} representing the found friend.
-         * @throws InterruptedException if the thread is interrupted during the search.
          */
         public SelenideElement searchForFriend(String friendName) {
             return friendCards

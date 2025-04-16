@@ -1,12 +1,11 @@
 package homework_3.tests;
 
+import homework_3.annotations.BotRequired;
 import homework_3.pages.HomePage;
 import homework_3.pages.LoginPage;
 import org.junit.jupiter.api.*;
 
 import java.util.stream.Stream;
-
-import static com.codeborne.selenide.Condition.cssClass;
 
 /**
  * Test class for home page functionality.
@@ -23,6 +22,7 @@ import static com.codeborne.selenide.Condition.cssClass;
  */
 @Timeout(5)
 @Tag("smoke")
+@BotRequired
 public class HomeTest extends BasicTest {
 
     /**
@@ -31,6 +31,7 @@ public class HomeTest extends BasicTest {
     @Nested
     @Timeout(10)
     @DisplayName("Feed test")
+    @BotRequired
     class Feed {
 
         /**
@@ -50,6 +51,7 @@ public class HomeTest extends BasicTest {
      */
     @Nested
     @DisplayName("Navigation test")
+    @BotRequired
     class Navigation {
 
         /**
@@ -88,9 +90,7 @@ public class HomeTest extends BasicTest {
          */
         void testActivePage(String featureName, HomePage page) {
             page.goToPageByName(featureName)
-                    .getNavLinkByName(featureName)
-                    .shouldHave(cssClass("__ac"))
-            ;
+                    .verifyNavLinkByNameIsActive(featureName);
         }
     }
 }
