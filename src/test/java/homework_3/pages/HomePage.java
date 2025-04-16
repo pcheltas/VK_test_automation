@@ -4,7 +4,7 @@ import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 
 import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
-import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
 
 /**
@@ -21,6 +21,7 @@ import static com.codeborne.selenide.Selenide.*;
 public class HomePage {
     private final Navigation navigation;
     private final Feed feed;
+    private final String activeClassname = "__ac";
 
     public HomePage() {
         this.navigation = new Navigation();
@@ -47,16 +48,6 @@ public class HomePage {
     }
 
     /**
-     * Finds a navigation link by its name.
-     *
-     * @param name the data-l attribute value identifying the navigation link
-     * @return {@code SelenideElement} representing the found navigation link
-     */
-    public SelenideElement getNavLinkByName(String name) {
-        return navigation.getNavLinkByName(name);
-    }
-
-    /**
      * Navigates to a page by clicking on the corresponding navigation link.
      *
      * @param name the data-l attribute value identifying the page to navigate to
@@ -73,7 +64,34 @@ public class HomePage {
      * @return current {@code HomePage} instance for method chaining
      */
     public HomePage verifyFeedIsNotEmpty() {
-        feed.getFeedItems().shouldHave(sizeGreaterThan(0));
+        feed.getFeedItems().shouldHave(sizeGreaterThan(0).because("To verify feed is not empty should be at least one item"));
+        return this;
+    }
+
+    /**
+     * Verifies that a navigation link with the specified name is marked as active.
+     * <p>
+     * Checks for the presence of active state CSS class on the target navigation link.
+     *
+     * @param name The display text of the navigation link to verify
+     * @return current {@code HomePage} instance for method chaining
+     */
+    public HomePage verifyNavLinkByNameIsActive(String name) {
+        navigation.getNavLinkByName(name)
+                .shouldHave(cssClass(activeClassname));
+        return this;
+    }
+
+    /**
+     * Verifies that the user profile link displays the expected username.
+     * <p>
+     *     Validates user authentication state by checking visible username in profile section.
+     * </p>
+     * @param name Expected username text to verify
+     * @return current {@code HomePage} instance for method chaining
+     */
+    public HomePage verifyUserProfileLinkContainsUsername(String name) {
+        getUserProfileLink().shouldHave(text(name));
         return this;
     }
 
@@ -83,6 +101,7 @@ public class HomePage {
     private class Navigation {
         private final SelenideElement userProfileLink = $x("//a[contains(@data-l, 'userPage')]");
         private final SelenideElement friendsLink = $x("//a[contains(@data-l, 'userFriend')]");
+        private final String datalFormatter = "//a[contains(@data-l, '%s')]";
 
         /**
          * Gets the user profile link element.
@@ -108,7 +127,7 @@ public class HomePage {
          * @return {@code SelenideElement} representing the found navigation link
          */
         public SelenideElement getNavLinkByName(String name) {
-            return $x(String.format("//a[contains(@data-l, '%s')]", name));
+            return $x(String.format(datalFormatter, name));
         }
 
         /**

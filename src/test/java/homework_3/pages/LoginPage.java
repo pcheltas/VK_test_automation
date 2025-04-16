@@ -62,7 +62,7 @@ public class LoginPage {
      * @return current {@code LoginPage} instance
      */
     public LoginPage verifyErrorMessageVisible() {
-        errorMessage.shouldBe(visible);
+        errorMessage.shouldBe(visible.because("Message should be visible to verify it"));
         return this;
     }
 }

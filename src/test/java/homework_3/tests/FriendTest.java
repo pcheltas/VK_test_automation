@@ -1,5 +1,6 @@
 package homework_3.tests;
 
+import homework_3.annotations.BotRequired;
 import homework_3.model.Bot;
 import homework_3.model.BotType;
 import homework_3.pages.FriendsPage;
@@ -19,6 +20,7 @@ import static com.codeborne.selenide.Selenide.*;
  */
 @Timeout(30)
 @DisplayName("Friend page test")
+@BotRequired
 public class FriendTest extends BasicTest {
 
 

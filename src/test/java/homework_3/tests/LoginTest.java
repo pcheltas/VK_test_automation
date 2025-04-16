@@ -1,5 +1,6 @@
 package homework_3.tests;
 
+import homework_3.annotations.BotRequired;
 import homework_3.pages.LoginPage;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -35,12 +36,12 @@ public class LoginTest extends BasicTest {
      * </p>
      */
     @DisplayName("Successful login")
+    @BotRequired
     @Test
     void login_givenValid_shouldSuccessfulLogin() {
         new LoginPage()
                 .login(bot.login(), bot.password())
-                .getUserProfileLink()
-                .shouldHave(text(bot.username()));
+                .verifyUserProfileLinkContainsUsername(bot.username());
     }
 
 
