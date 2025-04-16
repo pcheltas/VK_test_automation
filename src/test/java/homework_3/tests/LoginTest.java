@@ -12,7 +12,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
 
-import static com.codeborne.selenide.Condition.text;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 /**
