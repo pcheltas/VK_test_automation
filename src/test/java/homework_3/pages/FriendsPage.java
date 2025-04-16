@@ -2,6 +2,7 @@ package homework_3.pages;
 
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
+import org.openqa.selenium.support.ui.LoadableComponent;
 
 import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
 import static com.codeborne.selenide.Condition.*;
@@ -20,7 +21,7 @@ import static com.codeborne.selenide.Selenide.$x;
  * </ul>
  * </p>
  */
-public class FriendsPage {
+public class FriendsPage extends LoadableComponent<FriendsPage> {
     private final Search search;
     private final Requests requests;
     private final FriendsList friendsList;
@@ -29,6 +30,16 @@ public class FriendsPage {
         this.search = new Search();
         this.requests = new Requests();
         this.friendsList = new FriendsList();
+    }
+
+    @Override
+    protected void load() {
+
+    }
+
+    @Override
+    protected void isLoaded() throws Error {
+
     }
 
     /**
@@ -155,7 +166,7 @@ public class FriendsPage {
      */
     private class FriendsList {
         private final SelenideElement friendsBlock = $x("//div[@id='hook_Block_MyFriendsSquareCardsPagingB']");
-        private final ElementsCollection friendCards = $$x(".//li");
+        private final String friendCards = ".//li";
 
         /**
          * Searches for a friend in the current friends list by their name.
@@ -164,7 +175,7 @@ public class FriendsPage {
          * @return the {@link SelenideElement} representing the found friend.
          */
         public SelenideElement searchForFriend(String friendName) {
-            return friendCards
+            return friendsBlock.$$x(friendCards)
                     .shouldHave(sizeGreaterThan(0).because("Friends needed to find a specific friend"))
                     .findBy(text(friendName));
         }
