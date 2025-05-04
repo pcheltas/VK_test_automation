@@ -112,12 +112,7 @@ public class FriendsPage extends LoadableComponent<FriendsPage> {
             searchInput.shouldBe(visible.because("Should be search input to find a friend"))
                     .shouldBe(enabled.because("Input should be enabled to click on it and focus"))
                     .click();
-            Thread.sleep(3000);             // для ожидания фокусировки строки поиска после нажатия.
-            // Использование неявных ожиданий или отсутствие предварительного клика вообще
-            // влекут за собой бездействие при нажатии Enter (поиск не начинается).
-            // Для использования явных ожиданий непонятно чего ждать. Можно было бы ждать
-            // появления истории поиска, но на практике с sleep() при прогоне теста она (история) не
-            // появляется, а поиск работает. Как исправить хз, знаю, что плохая практика
+            Thread.sleep(3000);
             searchInput.shouldBe(focused.because("Input should be focused to set value in it"))
                     .setValue(friend)
                     .pressEnter();
@@ -152,11 +147,7 @@ public class FriendsPage extends LoadableComponent<FriendsPage> {
          * @throws InterruptedException if the thread is interrupted during the operation.
          */
         public void acceptRequest(String friendName) throws InterruptedException {
-            Thread.sleep(5000);           //При отсутствии sleep() нажатие на кнопку не принимает заявку в друзья. Так же, как и
-            // со строкой поиска, неявные ожидания не помогают. Ощущение, как будто скрипт
-            // на обработку события не успевает замаппиться на кнопку (если не это, то без
-            // понятия, что происходит). Для использования явных ожиданий все так же непонятно
-            // чего ждать. Тоже хз как исправить
+            Thread.sleep(5000);
             requestBlock.$$x(requestItems)
                     .shouldBe(sizeGreaterThan(0).because("Friendship requests needed to accept request"))
                     .findBy(text(friendName))
